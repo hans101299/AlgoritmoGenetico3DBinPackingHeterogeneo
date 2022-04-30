@@ -141,9 +141,9 @@ public class Cromosoma {
             secPaquetesNuevo.set(i,padre2.getSecPaquetesCromosoma().get(indicepadre2));
         }
 
+        int punto = rand.nextInt(this.secContenedorCromosoma.size());
         for (int i =0 ;i<this.secContenedorCromosoma.size();i++){
-            prob = rand.nextFloat();
-            if(prob<0.5){
+            if(i<punto) {
                 secContenedoresNuevo.add(this.secContenedorCromosoma.get(i));
             }
             else {

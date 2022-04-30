@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import estructuras.Contenedor;
 import estructuras.Paquete;
 import estructuras.Rotacion;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,15 +20,16 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class EntradaDatos {
 
-    public ArrayList<Paquete> leerDatos() throws IOException, InvalidFormatException {
+    public static ArrayList<Paquete> leerDatosPaquetes() throws IOException, InvalidFormatException {
         ArrayList<Paquete> paquetes = new ArrayList<>();
-        ArrayList<Rotacion> rotaciones = new ArrayList<Rotacion>();
-        File file = new File("./data/entrada.xlsx");
-        XSSFWorkbook wb = new XSSFWorkbook(file);
+        File pkg = new File("src\\main\\java\\IO\\data\\entrada.xlsx");
+        XSSFWorkbook wb = new XSSFWorkbook(pkg);
         XSSFSheet sheet = wb.getSheet("PAQUETES");     //creating a Sheet object to retrieve object
         Iterator<Row> itr = sheet.iterator();
+        itr.next();
         while (itr.hasNext())
         {
+            ArrayList<Rotacion> rotaciones = new ArrayList<Rotacion>();
             Row row = itr.next();
             if(row.getCell(0) == null || row.getCell(0).getCellType() == CellType.BLANK){
                 break;
@@ -54,6 +57,29 @@ public class EntradaDatos {
                     ));
         }
         return paquetes;
+    }
+
+    public static ArrayList<Contenedor> leerDatosContenedores() throws IOException, InvalidFormatException {
+        ArrayList<Contenedor> contenedores = new ArrayList<>();
+        ArrayList<Rotacion> rotaciones = new ArrayList<Rotacion>();
+        File file = new File("src\\main\\java\\IO\\data\\entrada.xlsx");
+        XSSFWorkbook wb = new XSSFWorkbook(file);
+        XSSFSheet sheet = wb.getSheet("CONTENEDORES");     //creating a Sheet object to retrieve object
+        Iterator<Row> itr = sheet.iterator();
+        itr.next();
+        while (itr.hasNext())
+        {
+            Row row = itr.next();
+            if(row.getCell(0) == null || row.getCell(0).getCellType() == CellType.BLANK){
+                break;
+            }
+
+            contenedores.add(new Contenedor((float) row.getCell(1).getNumericCellValue(),
+                    (float) row.getCell(2).getNumericCellValue(), (float) row.getCell(3).getNumericCellValue(),
+                    (float) row.getCell(4).getNumericCellValue()
+            ));
+        }
+        return contenedores;
     }
 
 }
