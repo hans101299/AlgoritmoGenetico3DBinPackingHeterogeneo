@@ -133,15 +133,15 @@ public class Contenedor implements Cloneable{
         }
     }
 
-    private boolean inscribed(EMS ems1, EMS ems2) {
-        if(ems2.getP1()[0]<=ems1.getP1()[0] && ems2.getP1()[1]<=ems1.getP1()[1] && ems2.getP1()[2]>ems1.getP1()[2] &&
+    public boolean inscribed(EMS ems1, EMS ems2) {
+        if(ems2.getP1()[0]<=ems1.getP1()[0] && ems2.getP1()[1]<=ems1.getP1()[1] && ems2.getP1()[2]<=ems1.getP1()[2] &&
                 ems1.getP2()[0]<=ems2.getP2()[0] && ems1.getP2()[1]<=ems2.getP2()[1] && ems1.getP2()[2]<=ems2.getP2()[2]){
             return true;
         }
         return false;
     }
 
-    private boolean overlapped(EMS ems1, EMS ems2) {
+    public boolean overlapped(EMS ems1, EMS ems2) {
         if(ems1.getP2()[0]>ems2.getP1()[0] && ems1.getP2()[1]>ems2.getP1()[1] && ems1.getP2()[2]>ems2.getP1()[2] &&
                 ems1.getP1()[0]<ems2.getP2()[0] && ems1.getP1()[1]<ems2.getP2()[1] && ems1.getP1()[2]<ems2.getP2()[2]){
             return true;

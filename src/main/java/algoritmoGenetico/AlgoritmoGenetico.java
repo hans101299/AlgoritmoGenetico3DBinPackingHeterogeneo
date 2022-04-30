@@ -35,7 +35,7 @@ public class AlgoritmoGenetico {
         return mejorSolucionAnterior.getSolucion();
     }
 
-    private List<Cromosoma> generarNuevaGeneracion(List<Cromosoma> poblacion, int tamPoblacion, float probCruzamiento,
+    public List<Cromosoma> generarNuevaGeneracion(List<Cromosoma> poblacion, int tamPoblacion, float probCruzamiento,
                                                    float probMutacion, int numParaNuevaGeneracion, int numEMSProbar, int numPaquetesProbar) {
         ArrayList<Cromosoma> poblacionNueva= new ArrayList<Cromosoma>(List.copyOf(poblacion));
         int tamRestoPoblacion;
@@ -75,7 +75,7 @@ public class AlgoritmoGenetico {
         return poblacionNueva;
     }
 
-    private List<Cromosoma> crearPoblacionInicial(ArrayList<Paquete> secPaquetes, ArrayList<Contenedor> secContenedores,
+    public List<Cromosoma> crearPoblacionInicial(ArrayList<Paquete> secPaquetes, ArrayList<Contenedor> secContenedores,
                                                   int tamPoblacion, float alfa, int numContenedoresProbar, int numPaquetesProbar) {
         ArrayList<Cromosoma> Poblacion = new ArrayList<Cromosoma>();
         int tamPaquetes;
@@ -94,7 +94,7 @@ public class AlgoritmoGenetico {
         return Poblacion;
     }
 
-    private List<Contenedor> crearSecContenedoresAleatorio(List<Contenedor> secContenedores, int tamPaquetes) {
+    public List<Contenedor> crearSecContenedoresAleatorio(List<Contenedor> secContenedores, int tamPaquetes) {
         ArrayList<Contenedor> SecContenedoresAleatorio = new ArrayList<>();
         Random rand = new Random();
         for(int i=0;i<tamPaquetes;i++){
@@ -103,7 +103,7 @@ public class AlgoritmoGenetico {
         return SecContenedoresAleatorio;
     }
 
-    private List<Paquete> crearSecPaquetesAleatorio(List<Paquete> secPaquetesOrdenado, float alfa) {
+    public List<Paquete> crearSecPaquetesAleatorio(List<Paquete> secPaquetesOrdenado, float alfa) {
         ArrayList<Paquete> SecPaquetesAleatorio = new ArrayList<>();
         ArrayList<Paquete> secPaquetesOrdenadoCopia = new ArrayList<Paquete>(List.copyOf(secPaquetesOrdenado));
         Random rand = new Random();
@@ -116,7 +116,7 @@ public class AlgoritmoGenetico {
         return SecPaquetesAleatorio;
     }
 
-    private List<Paquete> crearRCL(ArrayList<Paquete> secPaquetesOrdenadoCopia, float alfa) {
+    public List<Paquete> crearRCL(ArrayList<Paquete> secPaquetesOrdenadoCopia, float alfa) {
         ArrayList<Paquete> RCL = new ArrayList<>();
         float max = secPaquetesOrdenadoCopia.get(0).getVolumen();
         float min = secPaquetesOrdenadoCopia.get(secPaquetesOrdenadoCopia.size()-1).getVolumen();

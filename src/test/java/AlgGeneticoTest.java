@@ -1,19 +1,20 @@
 import algoritmoGenetico.AlgoritmoGenetico;
 import estructuras.Contenedor;
+import estructuras.Cromosoma;
 import estructuras.Paquete;
 import estructuras.Rotacion;
+import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
-public class App{
-    public static void main(String[] args) {
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+public class AlgGeneticoTest {
+    @Test
+    public void testAlgGenetico() throws Exception{
         ArrayList<Paquete> paquetes = new ArrayList<>();
         ArrayList<Contenedor> contenedores = new ArrayList<>();
         ArrayList<Contenedor> solucion;
@@ -35,8 +36,44 @@ public class App{
 
         contenedores.add(new Contenedor(6,20,10,100000));
         contenedores.add(new Contenedor(6,10,5,50000));
+
         AlgoritmoGenetico alg = new AlgoritmoGenetico();
-        solucion=alg.ejecutarAlgoritmoGenetico(paquetes,contenedores,15,100,50,0.85f,
-                0.7f,2,0.7f,1,2);
+        List<Cromosoma> pob = alg.crearPoblacionInicial(paquetes,contenedores,15,0.8f,2,3);
+        Assert.assertEquals(pob.size(), 15);
+        for (Cromosoma crom:pob) {
+            Assert.assertEquals(crom.getSecPaquetesCromosoma().size(),paquetes.size());
+            Assert.assertEquals(crom.getSecContenedorCromosoma().size(),paquetes.size());
+        }
+        pob=alg.generarNuevaGeneracion(pob,15,0.9f,0.8f,
+                5, 2,1);
+        Assert.assertEquals(pob.size(), 15);
+        for (Cromosoma crom:pob) {
+            Assert.assertEquals(crom.getSecPaquetesCromosoma().size(),paquetes.size());
+            Assert.assertEquals(crom.getSecContenedorCromosoma().size(),paquetes.size());
+        }
+        List<Contenedor> secContAleatoria = alg.crearSecContenedoresAleatorio(contenedores, paquetes.size());
+        Assert.assertEquals(secContAleatoria.size(),paquetes.size());
+        for (Contenedor cont: secContAleatoria) {
+            Assert.assertThat(contenedores,hasItem(cont));
+        }
+        Collections.sort(paquetes, Comparator.comparing(Paquete::getVolumen)
+                .thenComparing(Paquete::getLimiteApilacion)
+                .thenComparing(Paquete::getLargo)
+                .thenComparing(Paquete::getAncho).reversed());
+        List<Paquete> secPaquetes = alg.crearSecPaquetesAleatorio(paquetes, 0.8f);
+        Assert.assertEquals(secPaquetes.size(),paquetes.size());
+        ArrayList<String> ids = new ArrayList<>();
+        for (Paquete paquete: secPaquetes) {
+            Assert.assertThat(ids,not(hasItem(paquete.getId())));
+            ids.add(paquete.getId());
+        }
+
+        List<Paquete> rcl = alg.crearRCL(paquetes, 0.8f);
+        Assert.assertTrue(rcl.size()<paquetes.size());
+        ids = new ArrayList<>();
+        for (Paquete paquete: rcl) {
+            Assert.assertThat(ids,not(hasItem(paquete.getId())));
+            ids.add(paquete.getId());
+        }
     }
 }
